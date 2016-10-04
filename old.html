@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>TheMagicTrick.net - cardview app</title>
+<meta name="viewport" content="width=360, user-scalable=false;">
+
+<script type='text/javascript' src=jquery.js></script>
+
+<script type='text/javascript'>
+var lastcard;
+var code;
+
+cardcode = function(data) {
+//  alert("response:" +data.code);
+  showcard(data.code);
+}
+
+function showcard(data){
+      if (data=="na") { 
+
+        $("#number").css("background-image","url(dark/na.png)");
+        $("#snumber").css("background-image","url(simple/na.png)");
+
+        $("#suit").css("background-image","none");
+        $("#ssuit").css("background-image","none");
+        setTimeout("getcard()",3000);
+
+      } else if (data=="error") {
+
+        showpage("error");
+
+
+      } else {
+        suit=data.substr(1,1);
+        $("#suit").css("background-image","url(dark/"+suit+".jpg)");      
+        $("#ssuit").css("background-image","url(simple/suits/"+suit+".jpg)");            
+  
+        cnum=data.substr(0,1);
+  
+        $("#number").css("background-image","url(dark/"+cnum+".jpg)");      
+
+        sc="black";
+        if (suit=="H") {sc="red";}
+        if (suit=="D") {sc="red";}
+        
+        $("#snumber").css("background-image","url(simple/"+sc+"/"+cnum+".jpg)");      
+        setTimeout("getcard()",3000);
+     
+      }  
+}
+
+
+function getcard() {
+//  alert("requesting card");
+  var code=$("#code").val();
+  var url="http://themagictrick.net/cardcode2.asp?code="+code;  
+  $.ajax({
+    type: 'GET',
+    cache: false,
+    url: url,
+    async: false,
+    contentType: "application/json",
+
+    error:function(xhr,textstatus,errorthrown) {
+//      alert(textstatus+", "+errorthrown);
+    },
+
+
+    dataType: 'jsonp'
+  });
+}
+
+
+
+
+function getcard_old() {
+  var code=$("#code").val();
+
+  url="http://themagictrick.net/cardcode2.asp?code="+code;
+//  url="http://webby/cards/cardcode.asp?code="+code;
+//  $.support.cors=true;
+  $.ajax({
+    url: url, 
+    error:function(xhr,textstatus,errorthrown) {
+      alert(textstatus+", "+errorthrown);
+    },
+    success:function(data) {
+      
+
+      if (data=="na") { 
+
+        $("#number").css("background-image","url(dark/na.png)");
+        $("#snumber").css("background-image","url(simple/na.png)");
+
+        $("#suit").css("background-image","none");
+        $("#ssuit").css("background-image","none");
+        setTimeout("getcard()",3000);
+
+      } else if (data=="error") {
+
+        showpage("error");
+
+
+      } else {
+        suit=data.substr(1,1);
+        $("#suit").css("background-image","url(dark/"+suit+".jpg)");      
+        $("#ssuit").css("background-image","url(simple/suits/"+suit+".jpg)");            
+  
+        cnum=data.substr(0,1);
+  
+        $("#number").css("background-image","url(dark/"+cnum+".jpg)");      
+
+        sc="black";
+        if (suit=="H") {sc="red";}
+        if (suit=="D") {sc="red";}
+        
+        $("#snumber").css("background-image","url(simple/"+sc+"/"+cnum+".jpg)");      
+        setTimeout("getcard()",3000);
+     
+      }  
+    }
+  })
+}
+
+
+$(document).ready(function () {	
+
+var h=$(window).height();
+$(".pagehigh").css("height",h);
+$(".focus").focus();
+
+$(".page").hide();
+$(".page").first().show();
+
+});
+
+
+function showpage(p) {
+  $(".page").hide();
+  $("#page_"+p).show();
+}
+
+</script>
+
+
+
+<style type='text/css'>
+  body {font-family: arial; margin: 0px;}
+  input {font-size: inherit; text-align: center;}
+  .hide {display: none;}
+  .green {background: #006600 url(bg.png); }
+  a.button {display: block; color: black; text-decoration: none; font-size: 30px; padding: 10px 20px; background: silver; border: 2px solid white; border-radius: 5px; box-shadow: 4px 6px 8px rgba(0,0,0,0.5);}
+  .c {text-align: center;}
+</style>
+
+
+</head>
+<body>
+
+<table id=page_home class='page green c pagehigh' cellpadding=0 cellspacing=0 style='width: 100%; height: 100%;'>
+<tr>
+<td ><img src='hat_logo.png' alt='logo'></td></tr>
+<tr><td style='padding: 0px 50px;'>
+<div style='font-size: 18px; padding-bottom: 10px; color: white;'>Enter code:</div>
+<input class=focus id=code type=number style=' width: 100%; border: none; border-radius: 5px; font-size: 30px; padding: 5px 0px; text-align: center;'></td></tr>
+
+<tr><td style='padding: 0px 50px;'>
+<a class=button onclick='showpage("simple");getcard();'>Simple</a></td></tr>
+<tr><td style='padding: 0px 50px;'>
+<a class=button onclick='showpage("dark");getcard();'>Dark</a>
+</td></tr>
+
+<tr><td style='padding: 30px 50px;'>
+<a class=button onclick='showpage("more");'>Instructions</a>
+</td></tr>
+</table>
+</div>
+
+<div class=page id=page_more style='padding: 0px 20px 20px; background: #eeeeee; '>
+<h2 style='margin-top: 0px; padding-top: 20px;'>Welcome to <span style='color: green;'>The</span>Magic<span style='color: green;'>Trick</span>.net</h2>
+
+Our App isn’t <i>technically</i> a trick.
+<br><br>
+It’s more of a prop intended to be simple enough to be used by beginners to perform a very simple but powerful effect or incorporated into routines by the most advanced conjurers.
+<br><br>
+The effect is simple:
+<ul>
+<li>The mark visits <a href='http://www.TheMagicTrick.net'>www.TheMagicTrick.net</a> and selects a playing card from a standard deck of cards.
+
+<li>You are then able to mysteriously identify the card they chose.
+</ul>
+
+<hr>
+
+<h3>Important - Please read before downloading!</h3>
+
+To perform the trick you will need the following items:
+<ul>
+<li>Android device that is compatible with the App
+<li>A windows computer with:
+<ul>
+<li>Flash enabled (This is a standard plug-in on computers and is essential to run streaming video pages such as YouTube)
+<li>Javascript enabled – As standard this is enabled but some people may opt to switch java script off.
+<li>Cookies enabled – the effect is achieved by pairing the computer and the android phone using a temporary cookie.
+</ul>
+</ul>
+To check for computer compatibility we have created a webpage that will test for the required items automatically – simply visit <a href='http://www.TheMagicTrick.net/test'>www.TheMagicTrick.net/test</a>.
+<br><br>
+<b>Performing the trick is simple:</b>
+<ol>
+<li>Click and hold the top hat logo for two seconds, until a code number appears.<br>If you can't long-click, click on the tiniest star on the hat logo.
+<li>Open the App on your phone and enter the code.
+<li>Select Simple or Dark mode.
+<li>Position the phone so you can see it but the mark cannot.
+<li>The mark clicks on a card.
+<li>You correctly identify the card selected.
+</ol>
+<hr>
+<h3>Hints and Tips</h3>
+
+<ul>
+<li>Switch off the ringer on your phone!
+<li>As with all good tricks, do not over do it. Repeating a trick will make it more obvious or give the mark more chances to catch you out.
+<li>With the low contrast 'Dark' mode enabled you may wish to have the phone in plain sight and boldly predict what they have picked with a little misdirection.
+<li>Ensure the line of sight to the phone is easy for you to view but difficult for the mark to see, a smaller viewing angle can be achieved by placing the phone next to something.
+<li>Practice standing and performing the trick so the mark will not move and see the phone.
+<li>As with all good tricks practice showmanship and spin a story round the effect so it’s more impressive.
+<li>If people know that a smartphone is involved then the trick is simple to figure out – do not give away that a phone is used!
+<li>For the more advanced magicians out there please feel free to send us feedback or ideas for other apps that might be useful.
+<li>The code cookie lasts 48 hours, so you have plenty of time to prep the mark's computer in advance.
+</ul>
+<br>
+<a class='c button' onclick='showpage("home");'>Back</a>
+</div>
+
+<table class='page pagehigh c' id=page_simple style='background: white; width: 100%;' cellpadding=0 cellspacing=0>
+<tr><td id=snumber style='background: white center no-repeat; background-size: contain;'>&nbsp;</td></tr>
+<tr><td id=ssuit style='background: white center no-repeat; background-size: contain;'>&nbsp;</td></tr>
+</table>
+
+
+<table class='page pagehigh c' id=page_dark style='background: black; width: 100%;' cellpadding=0 cellspacing=0>
+<tr><td id=number style='background: black center no-repeat; background-size: contain;'>&nbsp;</td></tr>
+<tr><td id=suit style='background: black center no-repeat; background-size: contain;'>&nbsp;</td></tr>
+</table>
+
+<div class='page c pagehigh' id=page_error style='background: white url(dark/error.png) center no-repeat; background-size: contain; width: 100%;'>
+<div style='position: absolute; bottom: 0px; width: 100%;'>
+<div style='margin: 20px;'> 
+<a class=button onclick='showpage("home");'>Back</a>
+</div>
+</div>
+</div>
+
+</body>
+</html>

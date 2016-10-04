@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns   = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "com.roxbury.zener"
+        versionCode = "1" 
+        version     = "1.0.0" >
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>The Magic Trick</name>
+
+    <description>
+        Welcome to TheMagicTrick.net
+    </description>
+
+    <author href="http://roxburydynamic.com" email="info@roxburydynamic.com">
+        Roxbury Dynamic
+    </author>
+
+<access origin="*" />
+<allow-intent href="*" />
+<allow-navigation href="*" />
+
+<gap:plugin name="cordova-plugin-whitelist" source="npm" />
+
+<preference name="orientation" value="portrait" />
+<preference name="permissions" value="none"/>
+<preference name='phonegap-version' value='cli-6.3.0' />
+
+</widget>
